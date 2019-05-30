@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzf.dao.IDaoLog">
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="logId">
+		insert
+		into log (logImg,
+		logTxt,logPraise,logUserName,logUserPhone,logUserEmail,logUserGender,logUserBirthday,logUserDepart,logUserMajor,logUserClass,logIsAnonymity)
+		values
+		(#{logImg},#{logTxt},#{logPraise},#{logUserName},#{logUserPhone},#{logUserEmail},#{logUserGender},#{logUserBirthday},#{logUserDepart},#{logUserMajor},#{logUserClass},#{logIsAnonymity})
+	</insert>
+
+	<resultMap id="logResultMap" autoMapping="true"
+		type="com.lzf.entity.Log">
+		<id column="logId" jdbcType="INTEGER" property="logId" />
+		<result column="logTime" jdbcType="TIMESTAMP"
+			property="logTime" />
+		<result column="logImg" jdbcType="VARCHAR" property="logImg" />
+		<result column="logTxt" jdbcType="VARCHAR" property="logTxt" />
+		<result column="logPraise" jdbcType="INTEGER"
+			property="logPraise" />
+		<result column="logUserName" jdbcType="VARCHAR"
+			property="logUserName" />
+		<result column="logUserPhone" jdbcType="VARCHAR"
+			property="logUserPhone" />
+		<result column="logUserEmail" jdbcType="VARCHAR"
+			property="logUserEmail" />
+		<result column="logUserGender" jdbcType="VARCHAR"
+			property="logUserGender" />
+		<result column="logUserBirthday" jdbcType="VARCHAR"
+			property="logUserBirthday" />
+		<result column="logUserDepart" jdbcType="VARCHAR"
+			property="logUserDepart" />
+		<result column="logUserMajor" jdbcType="VARCHAR"
+			property="logUserMajor" />
+		<result column="logUserClass" jdbcType="VARCHAR"
+			property="logUserClass" />
+		<result column="logIsAnonymity" jdbcType="BOOLEAN"
+			property="logIsAnonymity" />
+		<collection property="comments"
+			ofType="com.lzf.entity.Comment">
+			<id property="commentId" jdbcType="INTEGER" column="commentId" />
+			<result column="commentTime" jdbcType="TIMESTAMP"
+				property="commentTime" />
+			<result column="commentTxt" jdbcType="VARCHAR"
+				property="commentTxt" />
+			<result column="commentLog" jdbcType="INTEGER"
+				property="commentLog" />
+			<result column="commentUserName" jdbcType="VARCHAR"
+				property="commentUserName" />
+			<result column="commentUserPhone" jdbcType="VARCHAR"
+				property="commentUserPhone" />
+			<result column="commentUserEmail" jdbcType="VARCHAR"
+				property="commentUserEmail" />
+			<result column="commentUserGender" jdbcType="VARCHAR"
+				property="commentUserGender" />
+			<result column="commentUserBirthday" jdbcType="VARCHAR"
+				property="commentUserBirthday" />
+			<result column="commentUserDepart" jdbcType="VARCHAR"
+				property="commentUserDepart" />
+			<result column="commentUserMajor" jdbcType="VARCHAR"
+				property="commentUserMajor" />
+			<result column="commentUserClass" jdbcType="VARCHAR"
+				property="commentUserClass" />
+			<result column="commentIsAnonymity" jdbcType="BOOLEAN"
+				property="commentIsAnonymity" />
+			<result column="replyUserName" jdbcType="VARCHAR"
+				property="replyUserName" />
+			<result column="replyUserPhone" jdbcType="VARCHAR"
+				property="replyUserPhone" />
+			<result column="replyUserEmail" jdbcType="VARCHAR"
+				property="replyUserEmail" />
+			<result column="replyUserGender" jdbcType="VARCHAR"
+				property="replyUserGender" />
+			<result column="replyUserBirthday" jdbcType="VARCHAR"
+				property="replyUserBirthday" />
+			<result column="replyUserDepart" jdbcType="VARCHAR"
+				property="replyUserDepart" />
+			<result column="replyUserMajor" jdbcType="VARCHAR"
+				property="replyUserMajor" />
+			<result column="replyUserClass" jdbcType="VARCHAR"
+				property="replyUserClass" />
+		</collection>
+	</resultMap>
+	<select id="dimSelect" resultMap="logResultMap">
+		select * from log left join
+		comment on log.logId = comment.commentLog
+		where logTxt like #{logTxt}
+		or logUserName like #{logUserName} or
+		logUserPhone like
+		#{logUserPhone}
+		or logUserEmail like #{logUserEmail}
+		or logUserGender
+		like
+		#{logUserGender} or logUserBirthday like
+		#{logUserBirthday} or
+		logUserDepart like #{logUserDepart} or logUserMajor like
+		#{logUserMajor} or
+		logUserClass like #{logUserClass}
+		order by logTime
+		DESC
+	</select>
+	<!-- logTime like #{logTime} or -->
+
+	<select id="select" resultMap="logResultMap">
+		select * from log left join
+		comment on log.logId = comment.commentLog
+		where logTxt like #{logTxt}
+		and logUserName like #{logUserName} and
+		logUserPhone like
+		#{logUserPhone}
+		and logUserEmail like #{logUserEmail}
+		and logUserGender
+		like
+		#{logUserGender} and logUserBirthday like
+		#{logUserBirthday} and
+		logUserDepart like #{logUserDepart} and logUserMajor like
+		#{logUserMajor} and
+		logUserClass like #{logUserClass}
+		order by logTime
+		DESC
+	</select>
+
+	<update id="praise">
+		update log set logPraise =
+		logPraise+1
+		where
+		logId=#{logId}
+	</update>
+
+	<delete id="delete">
+		delete from log where
+		logId=#{logId}
+	</delete>
+</mapper>
